@@ -42,6 +42,8 @@ func main() {
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
+	http.Get("http://localhost:9093")
+
 	coupon := r.PostFormValue("coupon")
 	valid := coupons.Check(coupon)
 
@@ -53,5 +55,4 @@ func home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, string(jsonResult))
-
 }
