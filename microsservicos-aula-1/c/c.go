@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/hashicorp/go-retryablehttp"
 )
 
 type Coupon struct {
@@ -42,7 +44,9 @@ func main() {
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
-	http.Get("http://localhost:9093")
+	retryClient := retryablehttp.NewClient()
+	retryClient.RetryMax = 5
+	retryClient.Get("http://localhost:9093")
 
 	coupon := r.PostFormValue("coupon")
 	valid := coupons.Check(coupon)
